@@ -3,42 +3,41 @@ package bag
 // bag data structure (multiset).
 type Bag struct {
 	size int
-	data map[interface{}]int
+	data []int
 }
 
 // Creates a new empty bag.
 func New() *Bag {
-	return &Bag{0, make(map[interface{}]int)}
+	return &Bag{0, make([]int,0)}
 }
 
 // Inserts an element into the bag.
-func (b *Bag) Insert(val interface{}) {
-	b.data[val]++
-	b.size++
+func (b *Bag) Insert(val int) {
+	b.data = append(b.data,val)
+}
+
+func (b *Bag) Get() []int{
+	return b.data
 }
 
 // Removes an element from the bag. If none was present, nothing is done.
-func (b *Bag) Remove(val interface{}) {
-	old, ok := b.data[val]
-	if ok {
-		if old > 1 {
-			b.data[val] = old - 1
-		} else {
-			delete(b.data, val)
+func (b *Bag) Remove(i int) {
+	for k:=0;k<len(b.data);k++{
+		if b.data[k]==i{
+			b.data[k] = b.data[b.Size()-1]
+			b.data = b.data[:b.Size()-1]
+			b.size--
+			break
 		}
-		b.size--
 	}
 }
 
+
 // Returns the total number of elemens in the bag.
 func (b *Bag) Size() int {
-	return b.size
+	return len(b.data)
 }
 
-// Counts the number of occurances of an element in the bag.
-func (b *Bag) Count(val interface{}) int {
-	return b.data[val]
-}
 
 // Clears the contents of a bag.
 func (b *Bag) Reset() {

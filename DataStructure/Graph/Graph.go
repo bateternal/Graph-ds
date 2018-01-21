@@ -2,7 +2,7 @@ package Graph
 
 import  (
 	"../bag"
-	)
+)
 
 type Graph struct {
 	nodes int
@@ -40,26 +40,30 @@ func (g *Graph) FindCountFriend(i int,j int) int{
 	return count
 }
 
-func (g *Graph) BFS() bool{
-	bl := make([]bool,g.nodes)
-	for i:=0;i<g.nodes;i++{
+func (g *Graph) BFS(nn float64) bool{
+	n := int(nn)
+	bl := make([]bool,n+1)
+	rr := 0
+	for i:=1;i<=n;i++{
 		bl[i]=false
 	}
 	l := make([]int,1)
 	l[0] = 1
 	for len(l) > 0{
 		v := l[len(l)-1]
-		l = l[len(l)-1]
+		l = l[:len(l)-1]
 		if !bl[v]{
+			//fmt.Println(v)
 			bl[v] = true
+			rr++
 			for i:=0;i<g.edges[v].Size();i++{
-				if !bl[g.edges[v].Count(i)]{
-					l = append(l,g.edges[i])
+				if !bl[g.edges[v].Get()[i]]{
+					l = append(l,g.edges[v].Get()[i])
 				}
 			}
 		}
 	}
-	for i:=0;i<g.nodes;i++{
+	for i:=1;i<=n;i++{
 		if !bl[i]{
 			return false
 		}
